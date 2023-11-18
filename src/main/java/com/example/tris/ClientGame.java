@@ -11,7 +11,7 @@ import static com.example.tris.Game.dim;
 public class ClientGame {
 
     int x,y;//coordinate
-    int nmossa;
+    int nmossa = 0;
     int porta = 49152;
 
     Socket socket;
@@ -32,6 +32,8 @@ public class ClientGame {
             board = (Game.val[][]) inputStream.readObject();
 
             game.stampa(board);
+            nmossa++;
+            System.out.println("mossa numero: "+nmossa);
 
             //mossa
             System.out.print("Inserisci la cordinata X: ");
@@ -51,6 +53,12 @@ public class ClientGame {
             //fine mossa
 
             game.stampa(board);
+            nmossa++;
+            System.out.println("mossa numero: "+nmossa);
+
+            ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
+            // Invio della matrice
+            outputStream.writeObject(board);
 
             if (game.checkWin(board, x, y)) {
                 System.out.println("Fine del gioco");
@@ -58,12 +66,11 @@ public class ClientGame {
 
             System.out.println("----Fine del Turno----");
 
-            ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
-            // Invio della matrice
-            outputStream.writeObject(board);
 
 
-        } while (!game.isDraw(board));
+
+
+        } while (!game.isDraw(board,nmossa));
 
         //close  dopo la fine del gioco
         socket.close();

@@ -11,7 +11,7 @@ import static com.example.tris.Game.dim;
 public class ServerGame {
 
     int x,y;//coordinate
-    int nmossa;
+    int nmossa = 0;
     int porta = 49152;
     // Inizializza una socket TCP che accetta connessioni da parte dei client
     ServerSocket serverSocket = new ServerSocket(porta);
@@ -48,6 +48,7 @@ public class ServerGame {
 
         do {
             game.stampa(board);
+            System.out.println("mossa numero: "+nmossa);
             //mossa
             System.out.print("Inserisci la cordinata X: ");
             int x = scanner.nextInt();
@@ -67,6 +68,8 @@ public class ServerGame {
             //fine mossa
 
             game.stampa(board);
+            nmossa++;
+            System.out.println("mossa numero: "+nmossa);
 
 
             if (game.checkWin(board,x,y)){
@@ -85,12 +88,19 @@ public class ServerGame {
             // Ricezione della matrice
             Game.val[][] pisello = (Game.val[][]) inputStream.readObject();
 
+            nmossa++;
+
+
+
             for (int i = 0; i < Game.dim; i++) {
                 for (int j = 0; j < Game.dim; j++) {
                     board[i][j] = pisello[i][j];
                 }
             }
-        }while (!game.isDraw(board));
+        }while (!game.isDraw(board,nmossa));
+
+        game.stampa(board);
+
         //TODO close  dopo la fine del gioco
         socket.close();
 
