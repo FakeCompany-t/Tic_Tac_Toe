@@ -6,6 +6,8 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Scanner;
 
+import java.util.concurrent.CompletableFuture;
+
 import static com.example.tris.Game.dim;
 
 public class ClientGame {
@@ -14,40 +16,50 @@ public class ClientGame {
     int nmossa = 0;
     //int porta = 49152;
 
+    ControllerGame controllerGame = new ControllerGame();
+
     Socket socket;
 
     public void handshaking(int porta) throws IOException {
         socket = new Socket("localhost", porta);
     }
 
-    public void messaggio() throws IOException, ClassNotFoundException {
+    public void messaggio(int porta) throws IOException, ClassNotFoundException {
         Game game = new Game();
         Scanner scanner = new Scanner(System.in);
-        Game.val client = Game.val.O;
-        Game.val[][] board = new Game.val[Game.dim][Game.dim];
+        Game.val player = Game.val.O;
+        Game.val[][] board;
+
+
 
         do {
+            controllerGame.setCurrentPlayer("X");
+            System.out.println("E' il turno di: "+controllerGame.getCurrentPlayer());
             ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
             // Ricezione della matrice
             board = (Game.val[][]) inputStream.readObject();
-
             game.stampa(board);
             nmossa++;
             System.out.println("mossa numero: "+nmossa);
 
+            controllerGame.setCurrentPlayer("O");
+            System.out.println("E' il turno di: "+controllerGame.getCurrentPlayer());
             //mossa
+
             System.out.print("Inserisci la cordinata X: ");
-            int x = scanner.nextInt();
+            x = scanner.nextInt();
+            //x = controllerGame.getX();
 
             System.out.print("Inserisci la cordinata Y: ");
-            int y = scanner.nextInt();
+            y = scanner.nextInt();
+            //y = controllerGame.getY();
 
             System.out.println("Hai inserito la coppia di cordinate: " + x + " e " + y);
 
             //scanner.close();
 
             if (game.isEmpty(board, x, y)) {
-                board[x][y] = client;
+                board[x][y] = player;
             } else
                 System.out.println("Casella occupata");
             //fine mossa
@@ -65,10 +77,6 @@ public class ClientGame {
             }
 
             System.out.println("----Fine del Turno----");
-
-
-
-
 
         } while (!game.isDraw(board,nmossa));
 

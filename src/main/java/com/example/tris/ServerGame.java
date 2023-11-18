@@ -5,6 +5,7 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
+import java.util.concurrent.CompletableFuture;
 
 import static com.example.tris.Game.dim;
 
@@ -17,8 +18,8 @@ public class ServerGame {
     ServerSocket serverSocket;
     Socket socket;
 
-    public ServerGame() throws IOException {
-    }
+    ControllerGame controllerGame = new ControllerGame();
+
 
     void handshaking(int porta) throws IOException {
         serverSocket = new ServerSocket(porta);
@@ -35,13 +36,14 @@ public class ServerGame {
         System.out.println("Connessione accettata da: " + socket);
     }
 
-    void messaggi() throws IOException, ClassNotFoundException {
-
+    void messaggi(int porta) throws IOException, ClassNotFoundException {
+        //handshaking(porta);
         Game.val nullo = Game.val.V;
         Game game = new Game();
-        Game.val host = Game.val.X;
+        Game.val player = Game.val.X;
         Scanner scanner = new Scanner(System.in);
         Game.val[][] board = new Game.val[Game.dim][Game.dim];
+
 
         game.inizialize_board(board);
 
@@ -49,18 +51,23 @@ public class ServerGame {
             game.stampa(board);
             System.out.println("mossa numero: "+nmossa);
             //mossa
+            controllerGame.setCurrentPlayer("X");
+            System.out.println("E' il turno di: "+controllerGame.getCurrentPlayer());
+
             System.out.print("Inserisci la cordinata X: ");
             int x = scanner.nextInt();
+            //x = controllerGame.getX();
 
             System.out.print("Inserisci la cordinata Y: ");
             int y = scanner.nextInt();
+            //y = controllerGame.getY();
 
             System.out.println("Hai inserito la coppia di cordinate: " + x + " e " + y);
 
             //scanner.close();
 
             if (game.isEmpty(board,x,y)){
-                board[x][y] = host;
+                board[x][y] = player;
             }
             else
                 System.out.println("Casella occupata");
@@ -77,6 +84,8 @@ public class ServerGame {
             }
 
             System.out.println("----Fine del Turno----");
+            controllerGame.setCurrentPlayer("O");
+            System.out.println("E' il turno di: "+controllerGame.getCurrentPlayer());
             //Invio della matrice
             ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
             // Invio della matrice
@@ -104,5 +113,7 @@ public class ServerGame {
         socket.close();
 
     }
+
+
 
 }

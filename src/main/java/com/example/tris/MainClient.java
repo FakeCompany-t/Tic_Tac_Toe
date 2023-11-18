@@ -9,7 +9,7 @@ public class MainClient {
         ClientGame gioco = new ClientGame();
 
         gioco.handshaking(port);
-        gioco.messaggio();
+        //gioco.messaggio();
 
     }
 }

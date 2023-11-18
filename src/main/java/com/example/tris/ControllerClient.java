@@ -46,11 +46,23 @@ public class ControllerClient {
         portNumber = Integer.parseInt(tfCode.getText());
         System.out.println(portNumber);
         ClientGame client = new ClientGame();
+
         client.handshaking(portNumber);
 
         ControllerLoading loading = new ControllerLoading();
         loading.start(stage);
         stage.setTitle("Client");
+
+        new Thread(()->{
+            try {
+                client.messaggio(portNumber);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        }).start();
+
     }
 }
 

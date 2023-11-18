@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 public class ControllerLoading extends Application {
 
     private Scene scena;
+    private Stage stage;
 
 
     public void start(Stage stage) throws Exception {
@@ -17,5 +18,6 @@ public class ControllerLoading extends Application {
         stage.setScene(scena);
         stage.show();
     }
+
 
 }
