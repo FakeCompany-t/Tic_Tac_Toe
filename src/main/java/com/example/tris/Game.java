@@ -74,12 +74,16 @@ public class Game {
     }
 
     boolean isDraw(val[][] board){
-        if(nmossa==8 && !checkWin(board,x,y)){
-            System.out.println("Pareggio");
-            return true;
+        for (int i = 0; i < dim; i++) {
+            for (int j = 0; j < dim; j++) {
+                if (board[i][j] == val.V) {
+                    return false;  // Trovato un elemento uguale al valore dell'enum
+                }
+            }
         }
-        else
-            return false;
+        // Se nessun elemento è uguale al valore dell'enum, allora sono tutte diverse
+        System.out.println("Pareggio");
+        return true;
     }
 
     boolean isEmpty(val[][] board, int x, int y){

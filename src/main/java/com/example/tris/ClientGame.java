@@ -26,7 +26,7 @@ public class ClientGame {
         Game.val client = Game.val.O;
         Game.val[][] board = new Game.val[Game.dim][Game.dim];
 
-        while (!game.isDraw(board)){
+        do {
             ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
             // Ricezione della matrice
             board = (Game.val[][]) inputStream.readObject();
@@ -44,16 +44,15 @@ public class ClientGame {
 
             //scanner.close();
 
-            if (game.isEmpty(board,x,y)){
+            if (game.isEmpty(board, x, y)) {
                 board[x][y] = client;
-            }
-            else
+            } else
                 System.out.println("Casella occupata");
             //fine mossa
 
             game.stampa(board);
 
-            if (game.checkWin(board,x,y)){
+            if (game.checkWin(board, x, y)) {
                 System.out.println("Fine del gioco");
             }
 
@@ -63,9 +62,12 @@ public class ClientGame {
             // Invio della matrice
             outputStream.writeObject(board);
 
-        }
+
+        } while (!game.isDraw(board));
+
         //close  dopo la fine del gioco
         socket.close();
 
     }
+
 }

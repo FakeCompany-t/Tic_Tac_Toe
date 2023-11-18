@@ -17,6 +17,9 @@ public class ServerGame {
     ServerSocket serverSocket = new ServerSocket(porta);
     Socket socket;
 
+    public ServerGame() throws IOException {
+    }
+
     void handshaking() throws IOException {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             try {
@@ -43,9 +46,7 @@ public class ServerGame {
 
         game.inizialize_board(board);
 
-
-
-        while (!game.isDraw(board)){
+        do {
             game.stampa(board);
             //mossa
             System.out.print("Inserisci la cordinata X: ");
@@ -89,18 +90,10 @@ public class ServerGame {
                     board[i][j] = pisello[i][j];
                 }
             }
-
-        }
-
-
-
-
+        }while (!game.isDraw(board));
         //TODO close  dopo la fine del gioco
         socket.close();
 
     }
 
-    public ServerGame() throws IOException {
-        this.porta = porta;
-    }
 }
