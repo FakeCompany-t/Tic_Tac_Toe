@@ -12,11 +12,11 @@ public class ClientGame {
 
     int x,y;//coordinate
     int nmossa = 0;
-    int porta = 49152;
+    //int porta = 49152;
 
     Socket socket;
 
-    public void handshaking() throws IOException {
+    public void handshaking(int porta) throws IOException {
         socket = new Socket("localhost", porta);
     }
 

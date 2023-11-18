@@ -8,7 +8,7 @@ public class MainServer {
 
         ServerGame gioco = new ServerGame();
 
-        //gioco.handshaking();
+        gioco.handshaking(49152);
         gioco.messaggi();
 
     }

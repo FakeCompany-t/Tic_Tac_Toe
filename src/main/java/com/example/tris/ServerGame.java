@@ -12,15 +12,16 @@ public class ServerGame {
 
     int x,y;//coordinate
     int nmossa = 0;
-    int porta = 49152;
+
     // Inizializza una socket TCP che accetta connessioni da parte dei client
-    ServerSocket serverSocket = new ServerSocket(porta);
+    ServerSocket serverSocket;
     Socket socket;
 
     public ServerGame() throws IOException {
     }
 
-    void handshaking() throws IOException {
+    void handshaking(int porta) throws IOException {
+        serverSocket = new ServerSocket(porta);
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             try {
                 serverSocket.close();
@@ -35,8 +36,6 @@ public class ServerGame {
     }
 
     void messaggi() throws IOException, ClassNotFoundException {
-
-        handshaking();
 
         Game.val nullo = Game.val.V;
         Game game = new Game();
