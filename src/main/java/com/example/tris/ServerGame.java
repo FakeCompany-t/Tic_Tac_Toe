@@ -94,7 +94,7 @@ public class ServerGame {
             //Ricezione della matrice
             ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
             // Ricezione della matrice
-            Game.val[][] pisello = (Game.val[][]) inputStream.readObject();
+            Game.val[][] tmp = (Game.val[][]) inputStream.readObject();
 
             nmossa++;
 
@@ -102,7 +102,7 @@ public class ServerGame {
 
             for (int i = 0; i < Game.dim; i++) {
                 for (int j = 0; j < Game.dim; j++) {
-                    board[i][j] = pisello[i][j];
+                    board[i][j] = tmp[i][j];
                 }
             }
         }while (!game.isDraw(board,nmossa));
