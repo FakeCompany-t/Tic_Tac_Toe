@@ -35,10 +35,6 @@ public class ClientGame {
         Game.val player = Game.val.O;
         Game.val[][] board;
 
-
-
-
-
         do {
             controllerGame.setCurrentPlayer("X");
             cPlayer = controllerGame.getCurrentPlayer();

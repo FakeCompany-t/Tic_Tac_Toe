@@ -8,21 +8,10 @@ import java.util.Scanner;
 
 public class ServerGame {
 
-    int x,y;//coordinate
     int nmossa = 0;
-
     // Inizializza una socket TCP che accetta connessioni da parte dei client
     ServerSocket serverSocket;
     Socket socket;
-
-    public static String getCPlayer() {
-        return cPlayer;
-    }
-
-    public void setCPlayer(String cPlayer) {
-        this.cPlayer = cPlayer;
-    }
-
     static String cPlayer;
 
     ControllerGame controllerGame = new ControllerGame();
@@ -46,7 +35,6 @@ public class ServerGame {
 
 
     void messaggi(int porta) throws IOException, ClassNotFoundException {
-        //handshaking(porta);
         Game.val nullo = Game.val.V;
         Game game = new Game();
         Game.val player = Game.val.X;

@@ -7,6 +7,7 @@
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.tris.ControllerMenu">
@@ -56,7 +57,10 @@
             <Button fx:id="btn_uniscitipartita" alignment="CENTER" layoutX="233.0" layoutY="137.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#btn_uniscitipartitaClicked" text="Unisciti a una partita essitente" />
             <Button fx:id="btn_impostazioni" alignment="CENTER" layoutX="279.0" layoutY="175.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#btn_impostazioniClicked" text="Impostazioni" />
             <Button fx:id="btn_esci" alignment="CENTER" layoutX="303.0" layoutY="209.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#btn_esciClicked" text="Esci" />
-            <Text layoutX="62.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Benvenuto nel gioco di scacchi a cura di Amore Matteo, Anzelotti Federico, Bertini Christian" />
+            <Text fill="#e1dbdb" layoutX="12.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Benvenuto nel Tic Tac Toe a cura di Amore Matteo, Anzelotti Federico, Bertini Christian">
+               <font>
+                  <Font name="Comic Sans MS" size="15.0" />
+               </font></Text>
       </children>
     </AnchorPane>
   </children>
