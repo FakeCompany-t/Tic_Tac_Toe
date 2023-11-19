@@ -6,7 +6,7 @@ import javafx.scene.layout.GridPane;
 
 import static com.example.tris.Game.dim;
 
-public class ControllerGameLabel {
+public class ControllerGame {
 
     String currentPlayer;
 

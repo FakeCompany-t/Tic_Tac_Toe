@@ -5,9 +5,6 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
-import java.util.concurrent.CompletableFuture;
-
-import static com.example.tris.Game.dim;
 
 public class ServerGame {
 
@@ -28,7 +25,7 @@ public class ServerGame {
 
     static String cPlayer;
 
-    ControllerGameLabel controllerGame = new ControllerGameLabel();
+    ControllerGame controllerGame = new ControllerGame();
 
 
     void handshaking(int porta) throws IOException {

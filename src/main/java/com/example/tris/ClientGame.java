@@ -6,10 +6,6 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Scanner;
 
-import java.util.concurrent.CompletableFuture;
-
-import static com.example.tris.Game.dim;
-
 public class ClientGame {
 
     int x,y;//coordinate
@@ -25,7 +21,7 @@ public class ClientGame {
 
     static String cPlayer;
 
-    ControllerGameLabel controllerGame = new ControllerGameLabel();
+    ControllerGame controllerGame = new ControllerGame();
 
     Socket socket;
 

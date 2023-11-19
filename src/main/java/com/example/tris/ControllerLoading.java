@@ -14,7 +14,7 @@ public class ControllerLoading extends Application {
 
 
     public void start(Stage stage) throws Exception {
-        FXMLLoader fxmlLoader = new FXMLLoader(ControllerClient.class.getResource("GameLabel.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(ControllerClient.class.getResource("Game.fxml"));
         Parent root = fxmlLoader.load();
         scena = new Scene(root);
         stage.setScene(scena);

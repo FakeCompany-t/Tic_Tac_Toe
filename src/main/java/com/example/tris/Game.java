@@ -30,8 +30,7 @@ public class Game {
     private boolean checkS(val[][] board) {
         if (board[0][0].equals(board[1][1])&&
         board[0][0].equals(board[2][2])&& !isEmpty(board,0,0)){
-            val winner = board[0][0];
-            System.out.println(winner);
+            winner = board[0][0];
             return true;
         }
         return false;
@@ -40,8 +39,7 @@ public class Game {
     private boolean checkD(val[][] board) {
         if (board[0][2].equals(board[1][1])&&
         board[0][2].equals(board[2][0])&& !isEmpty(board,0,2)){
-            val winner = board[0][2];
-            System.out.println(winner);
+            winner = board[0][2];
             return true;
         }
         return false;
@@ -50,8 +48,7 @@ public class Game {
     private boolean checkCol(val[][] board, int y) {
             if (board[0][y].equals(board[1][y])&&
                     board[0][y].equals(board[2][y])) {
-                val winner = board[0][y];
-                System.out.println(winner);
+                winner = board[0][y];
                 return true;
             }
         return false;
@@ -60,8 +57,7 @@ public class Game {
     private boolean checkRow(val[][] board, int x) {
             if (board[x][0].equals(board[x][1])&&
             board[x][0].equals(board[x][2])){
-                val winner = board[x][0];
-                System.out.println(winner);
+                winner = board[x][0];
                 return true;
             }
         return false;
@@ -69,6 +65,7 @@ public class Game {
 
     boolean checkWin(val[][] board, int x, int y){
         if (( checkRow(board,x) || checkCol(board,y) || checkD(board) || checkS(board))){
+            System.out.println(winner);
             return true;
         }
         else {
