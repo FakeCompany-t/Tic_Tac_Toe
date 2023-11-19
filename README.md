@@ -113,9 +113,9 @@ Abbiamo creato numerose classi:
 
 - ### ControllerClient.java
 
-La classe ControllerClient é la classe che serve per gestire i **Node** di **ClientScene.fxml**
+    La classe ControllerClient é la classe che serve per gestire i **Node** di **ClientScene.fxml**
 
-- #### Bottone **BTM**
+  - #### Bottone **BTM**
 
              @FXML
             void btnBTMClicked(ActionEvent event) throws IOException {
@@ -128,7 +128,7 @@ La classe ControllerClient é la classe che serve per gestire i **Node** di **Cl
             }
         Bottone che permette di tornare alla schermata di menú iniziale
 
-- #### Bottone Submit
+  - #### Bottone Submit
 
         void btnSubmitClicked(ActionEvent event) throws Exception {
             FXMLLoader fxmlLoader = new FXMLLoader(ControllerClient.class.getResource("LoadingScreen.fxml"));
@@ -199,9 +199,9 @@ La classe ControllerLoading é la classe che si occupa di caricare la schermata 
 - ### Game.java
 
 
-La classe Game è quella che contiene tutte le meccaniche e le regole del gioco. All'interno, sono presenti diverse funzioni per gestire il flusso di gioco, quali il controllo della vittoria, la verifica di una situazione di pareggio, il controllo della presenza di caselle vuote e, infine, l'inizializzazione della matrice con valori "vuoti".
+    La classe Game è quella che contiene tutte le meccaniche e le regole del gioco. All'interno, sono presenti diverse funzioni per gestire il flusso di gioco, quali il controllo della vittoria, la verifica di una situazione di pareggio, il controllo della presenza di caselle vuote e, infine, l'inizializzazione della matrice con valori "vuoti".
 
-- #### Controllo vittoria sulle righe
+  - #### Controllo vittoria sulle righe
 
         private boolean checkRow(val[][] board, int x) {
                     if (board[x][0].equals(board[x][1])&&
@@ -212,7 +212,7 @@ La classe Game è quella che contiene tutte le meccaniche e le regole del gioco.
                 return false;
             }
 
-- #### Controllo vittoria sulle colonne
+  - #### Controllo vittoria sulle colonne
 
         private boolean checkCol(val[][] board, int y) {
                     if (board[0][y].equals(board[1][y])&&
@@ -223,7 +223,7 @@ La classe Game è quella che contiene tutte le meccaniche e le regole del gioco.
                 return false;
             }
 
-- #### Controllo vittoria diagonale sinistra
+  - #### Controllo vittoria diagonale sinistra
 
         private boolean checkS(val[][] board) {
             if (board[0][0].equals(board[1][1])&&
@@ -234,7 +234,7 @@ La classe Game è quella che contiene tutte le meccaniche e le regole del gioco.
             return false;
         }
 
-- #### Controllo vittoria diagonale destra
+  - #### Controllo vittoria diagonale destra
 
         private boolean checkD(val[][] board) {
                 if (board[0][2].equals(board[1][1])&&
@@ -245,7 +245,7 @@ La classe Game è quella che contiene tutte le meccaniche e le regole del gioco.
                 return false;
             }
 
-- #### Controllo pareggio
+  - #### Controllo pareggio
 
         boolean isDraw(val[][] board, int nmossa){
                 if (nmossa == 8 && !checkWin(board,1,1)){
@@ -258,7 +258,7 @@ La classe Game è quella che contiene tutte le meccaniche e le regole del gioco.
 
             }
 
-- #### Controllo caselle vuote
+  - #### Controllo caselle vuote
 
         boolean isEmpty(val[][] board, int x, int y){
                 if(board[x][y]==val.V)
@@ -267,7 +267,7 @@ La classe Game è quella che contiene tutte le meccaniche e le regole del gioco.
                     return false;
             }
 
-- #### Inizializzazione matrice "vuote"
+  - #### Inizializzazione matrice "vuote"
 
         void inizialize_board(val[][] matrice){
                 for (int i = 0; i < dim; i++) {
@@ -277,7 +277,7 @@ La classe Game è quella che contiene tutte le meccaniche e le regole del gioco.
                 }
             }
 
-- #### Stampa matrice
+  - #### Stampa matrice
 
         void stampa(val[][] board){
 
@@ -289,6 +289,205 @@ La classe Game è quella che contiene tutte le meccaniche e le regole del gioco.
                 }
 
             }
+
+---
+
+- ### ServerGame.java
+    Questa classe contiene i metodi di handshaking e di scambio dei messaggi lato server.
+
+    - **Handshaking**
+
+            void handshaking(int porta) throws IOException {
+            serverSocket = new ServerSocket(porta);
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                try {
+                    serverSocket.close();
+                    System.out.println("Server socket chiuso correttamente.");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }));
+
+            socket = serverSocket.accept();
+            System.out.println("Connessione accettata da: " + socket);
+            }
+        
+    - **Messaggi**
+
+            void messaggi(int porta) throws IOException, ClassNotFoundException {
+            //handshaking(porta);
+            Game.val nullo = Game.val.V;
+            Game game = new Game();
+            Game.val player = Game.val.X;
+            Scanner scanner = new Scanner(System.in);
+            Game.val[][] board = new Game.val[Game.dim][Game.dim];
+
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                try {
+                    // Chiude il server socket
+                    serverSocket.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }));
+
+
+            game.inizialize_board(board);
+
+            do {
+                game.stampa(board);
+                //controllerGame.updateGridPane(board);
+                System.out.println("mossa numero: "+nmossa);
+                //mossa
+                controllerGame.setCurrentPlayer("X");
+                cPlayer = controllerGame.getCurrentPlayer();
+                System.out.println("E' il turno di: "+cPlayer);
+
+                System.out.print("Inserisci la cordinata X: ");
+                int x = scanner.nextInt();
+                //x = controllerGame.getX();
+
+                System.out.print("Inserisci la cordinata Y: ");
+                int y = scanner.nextInt();
+                //y = controllerGame.getY();
+
+                System.out.println("Hai inserito la coppia di cordinate: " + x + " e " + y);
+
+                if (game.isEmpty(board,x,y)){
+                    board[x][y] = player;
+                }
+                else
+                    System.out.println("Casella occupata");
+                //fine mossa
+
+                game.stampa(board);
+                //controllerGame.updateGridPane(board); // dove 'board' è la matrice corrente
+                nmossa++;
+                System.out.println("mossa numero: "+nmossa);
+
+
+                if (game.checkWin(board,x,y)){
+                    System.out.println("Fine del gioco");
+                    socket.close();
+                    System.exit(0);
+
+                }
+
+                System.out.println("----Fine del Turno----");
+                controllerGame.setCurrentPlayer("O");
+                cPlayer = controllerGame.getCurrentPlayer();
+                System.out.println("E' il turno di: "+cPlayer);
+                //Invio della matrice
+                ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
+                // Invio della matrice
+                outputStream.writeObject(board);
+
+                //Ricezione della matrice
+                ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
+                // Ricezione della matrice
+                Game.val[][] tmp = (Game.val[][]) inputStream.readObject();
+
+                nmossa++;
+
+
+
+                for (int i = 0; i < Game.dim; i++) {
+                    for (int j = 0; j < Game.dim; j++) {
+                        board[i][j] = tmp[i][j];
+                    }
+                }
+            }while (!game.isDraw(board,nmossa));
+
+            game.stampa(board);
+
+            //TODO close  dopo la fine del gioco
+            socket.close();
+
+            }
+        
+        Questo metodo é il cuore del gioco lato server visto che si occupa della fase di input dei dati e lo scambio di messaggi con il client.
+
+---
+
+- ### ClientGame.java
+    Questa classe contiene i metodi di handshaking e di scambio dei messaggi lato client.
+
+    - **Handshaking**
+
+            public void handshaking(int porta) throws IOException {
+            socket = new Socket("localhost", porta);
+            }
+
+    - **Messaggi**
+
+            public void messaggio(int porta) throws IOException, ClassNotFoundException {
+                Game game = new Game();
+                Scanner scanner = new Scanner(System.in);
+                Game.val player = Game.val.O;
+                Game.val[][] board;
+
+                
+                do {
+                    controllerGame.setCurrentPlayer("X");
+                    cPlayer = controllerGame.getCurrentPlayer();
+                    System.out.println("E' il turno di: "+cPlayer);
+                    ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
+                    // Ricezione della matrice
+                    board = (Game.val[][]) inputStream.readObject();
+                    game.stampa(board);
+                    //controllerGame.updateGridPane(board); // dove 'board' è la matrice corrente
+                    nmossa++;
+                    System.out.println("mossa numero: "+nmossa);
+
+                    controllerGame.setCurrentPlayer("O");
+                    cPlayer = controllerGame.getCurrentPlayer();
+                    System.out.println("E' il turno di: "+cPlayer);
+                    //mossa
+
+                    System.out.print("Inserisci la cordinata X: ");
+                    x = scanner.nextInt();
+                    //x = controllerGame.getX();
+
+                    System.out.print("Inserisci la cordinata Y: ");
+                    y = scanner.nextInt();
+                    //y = controllerGame.getY();
+
+                    System.out.println("Hai inserito la coppia di cordinate: " + x + " e " + y);
+
+                    //scanner.close();
+
+                    if (game.isEmpty(board, x, y)) {
+                        board[x][y] = player;
+                    } else
+                        System.out.println("Casella occupata");
+                    //fine mossa
+
+                    game.stampa(board);
+                    //controllerGame.updateGridPane(board); // dove 'board' è la matrice corrente
+                    nmossa++;
+                    System.out.println("mossa numero: "+nmossa);
+
+                    ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
+                    // Invio della matrice
+                    outputStream.writeObject(board);
+
+                    if (game.checkWin(board, x, y)) {
+                        System.out.println("Fine del gioco");
+                        socket.close();
+                        System.exit(0);
+                    }
+
+                    System.out.println("----Fine del Turno----");
+
+                } while (!game.isDraw(board,nmossa));
+
+                //close  dopo la fine del gioco
+                socket.close();
+
+            }
+        Questo metodo é il cuore del gioco lato client visto che si occupa della fase di input dei dati e lo scambio di messaggi con il server.
+
+
 
 
 
@@ -319,8 +518,12 @@ I punti da conoscere per giocare sono i seguenti:
 
 
 
+## Conclusioni
 
+Al termine del tempo disponibile per completare il progetto, non siamo riusciti a implementare l'interfaccia grafica (GUI) all'interno del gioco. Durante tutta la durata antecedente alla scadenza del progetto abbiamo avuto l'opportunitá di studiare, apprendere, mettere in pratica tutte quelle che sono le competenze trasversali riguardo l'apprendimento di un nuovo linguaggio di programmazione come Java.
+Inoltre abbiamo appreso al meglio quelli che sono i principali paradigmi della programmazione a oggetti.
 
+I principali problemi riscontrati risiedono nella implementazione della interfaccia grafica con la nostra logica del programma, e di conseguenza si sono palesati dei problemi riguardanti la sincronizzazione.
 
 
 
