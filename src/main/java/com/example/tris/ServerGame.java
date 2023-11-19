@@ -53,12 +53,21 @@ public class ServerGame {
         Scanner scanner = new Scanner(System.in);
         Game.val[][] board = new Game.val[Game.dim][Game.dim];
 
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            try {
+                // Chiude il server socket
+                serverSocket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }));
+
 
         game.inizialize_board(board);
 
         do {
             game.stampa(board);
-            //controllerGame.updateGridPane(board); // dove 'board' è la matrice corrente
+            //controllerGame.updateGridPane(board);
             System.out.println("mossa numero: "+nmossa);
             //mossa
             controllerGame.setCurrentPlayer("X");
@@ -75,8 +84,6 @@ public class ServerGame {
 
             System.out.println("Hai inserito la coppia di cordinate: " + x + " e " + y);
 
-            //scanner.close();
-
             if (game.isEmpty(board,x,y)){
                 board[x][y] = player;
             }
@@ -92,6 +99,8 @@ public class ServerGame {
 
             if (game.checkWin(board,x,y)){
                 System.out.println("Fine del gioco");
+                socket.close();
+                System.exit(0);
 
             }
 

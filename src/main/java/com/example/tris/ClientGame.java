@@ -37,6 +37,8 @@ public class ClientGame {
 
 
 
+
+
         do {
             controllerGame.setCurrentPlayer("X");
             cPlayer = controllerGame.getCurrentPlayer();
@@ -83,6 +85,8 @@ public class ClientGame {
 
             if (game.checkWin(board, x, y)) {
                 System.out.println("Fine del gioco");
+                socket.close();
+                System.exit(0);
             }
 
             System.out.println("----Fine del Turno----");
