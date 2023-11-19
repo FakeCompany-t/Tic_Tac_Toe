@@ -1,6 +1,7 @@
 package com.example.tris;
 
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 import java.util.Scanner;
 
@@ -111,7 +112,5 @@ public class Game {
             }
         }
     }
-
-
 
 }

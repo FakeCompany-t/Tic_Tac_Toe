@@ -18,7 +18,17 @@ public class ServerGame {
     ServerSocket serverSocket;
     Socket socket;
 
-    ControllerGame controllerGame = new ControllerGame();
+    public static String getCPlayer() {
+        return cPlayer;
+    }
+
+    public void setCPlayer(String cPlayer) {
+        this.cPlayer = cPlayer;
+    }
+
+    static String cPlayer;
+
+    ControllerGameLabel controllerGame = new ControllerGameLabel();
 
 
     void handshaking(int porta) throws IOException {
@@ -36,6 +46,8 @@ public class ServerGame {
         System.out.println("Connessione accettata da: " + socket);
     }
 
+
+
     void messaggi(int porta) throws IOException, ClassNotFoundException {
         //handshaking(porta);
         Game.val nullo = Game.val.V;
@@ -49,10 +61,12 @@ public class ServerGame {
 
         do {
             game.stampa(board);
+            //controllerGame.updateGridPane(board); // dove 'board' è la matrice corrente
             System.out.println("mossa numero: "+nmossa);
             //mossa
             controllerGame.setCurrentPlayer("X");
-            System.out.println("E' il turno di: "+controllerGame.getCurrentPlayer());
+            cPlayer = controllerGame.getCurrentPlayer();
+            System.out.println("E' il turno di: "+cPlayer);
 
             System.out.print("Inserisci la cordinata X: ");
             int x = scanner.nextInt();
@@ -74,6 +88,7 @@ public class ServerGame {
             //fine mossa
 
             game.stampa(board);
+            //controllerGame.updateGridPane(board); // dove 'board' è la matrice corrente
             nmossa++;
             System.out.println("mossa numero: "+nmossa);
 
@@ -85,7 +100,8 @@ public class ServerGame {
 
             System.out.println("----Fine del Turno----");
             controllerGame.setCurrentPlayer("O");
-            System.out.println("E' il turno di: "+controllerGame.getCurrentPlayer());
+            cPlayer = controllerGame.getCurrentPlayer();
+            System.out.println("E' il turno di: "+cPlayer);
             //Invio della matrice
             ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
             // Invio della matrice

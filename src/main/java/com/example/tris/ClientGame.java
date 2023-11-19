@@ -14,9 +14,18 @@ public class ClientGame {
 
     int x,y;//coordinate
     int nmossa = 0;
-    //int porta = 49152;
 
-    ControllerGame controllerGame = new ControllerGame();
+    public static String getCPlayer() {
+        return cPlayer;
+    }
+
+    public void setCPlayer(String cPlayer) {
+        this.cPlayer = cPlayer;
+    }
+
+    static String cPlayer;
+
+    ControllerGameLabel controllerGame = new ControllerGameLabel();
 
     Socket socket;
 
@@ -34,16 +43,19 @@ public class ClientGame {
 
         do {
             controllerGame.setCurrentPlayer("X");
-            System.out.println("E' il turno di: "+controllerGame.getCurrentPlayer());
+            cPlayer = controllerGame.getCurrentPlayer();
+            System.out.println("E' il turno di: "+cPlayer);
             ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
             // Ricezione della matrice
             board = (Game.val[][]) inputStream.readObject();
             game.stampa(board);
+            //controllerGame.updateGridPane(board); // dove 'board' è la matrice corrente
             nmossa++;
             System.out.println("mossa numero: "+nmossa);
 
             controllerGame.setCurrentPlayer("O");
-            System.out.println("E' il turno di: "+controllerGame.getCurrentPlayer());
+            cPlayer = controllerGame.getCurrentPlayer();
+            System.out.println("E' il turno di: "+cPlayer);
             //mossa
 
             System.out.print("Inserisci la cordinata X: ");
@@ -65,6 +77,7 @@ public class ClientGame {
             //fine mossa
 
             game.stampa(board);
+            //controllerGame.updateGridPane(board); // dove 'board' è la matrice corrente
             nmossa++;
             System.out.println("mossa numero: "+nmossa);
 

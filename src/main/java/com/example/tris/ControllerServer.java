@@ -41,13 +41,13 @@ public class ControllerServer {
         portNumber = Integer.parseInt(txtfPort.getText());
         System.out.println(portNumber);
         ServerGame server = new ServerGame();
-        ControllerGame controllerGame = new ControllerGame();
+        ControllerGameLabel controllerGame = new ControllerGameLabel();
 
         server.handshaking(portNumber);//questo blocca il processo e quindi rende la schermata non funzionante(TODO)
 
         ControllerLoading loading = new ControllerLoading();
         loading.start(stage);
-        stage.setTitle("Host");
+        stage.setTitle("Game");
 
         new Thread(()->{
             try {
